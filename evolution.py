@@ -11,7 +11,7 @@ ROUNDS_BETWEEN_REPLICATIONS = 2
 N_TOURNEYS = 20
 
 
-class Population(object):
+class Evolution(object):
     def __init__(self):
         self.population = []
         self.fitness = []
@@ -48,18 +48,21 @@ class Population(object):
 
 
 if __name__ == "__main__":
-    pop = Population()
-    pop.load_population()
+    evo = Evolution()
+    try:
+        evo.load_population()
+    except Exception:
+        print("population not loaded! Supplying a new one")
+        for i in range(80):
+            evo.population.append(NeuralPlayer())
 
-    # for i in range(N_PLAYERS):
-    #     pop.population.append(NeuralPlayer())
-
-    # for i in range(50):
-    #     pop.population.append(TitTatPlayer())
+        for i in range(20):
+            evo.population.append(TitTatPlayer())
 
     for i in range(N_TOURNEYS):
         print(i)
-        pop.get_fitness()
-        pop.replicate_players()
+        evo.get_fitness()
+        evo.replicate_players()
 
-    pop.save_population()
+    print(evo.population)
+    evo.save_population()
