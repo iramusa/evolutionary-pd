@@ -6,7 +6,7 @@ import torch
 from players import NeuralPlayer, TitTatPlayer
 from tourney import Tourney
 
-N_PLAYERS = 100
+N_PLAYERS = 1000
 ROUNDS_BETWEEN_REPLICATIONS = 2
 N_TOURNEYS = 20
 
@@ -56,8 +56,8 @@ if __name__ == "__main__":
         for i in range(80):
             evo.population.append(NeuralPlayer())
 
-        for i in range(20):
-            evo.population.append(TitTatPlayer())
+        # for i in range(20):
+        #     evo.population.append(TitTatPlayer())
 
     for i in range(N_TOURNEYS):
         print(i)

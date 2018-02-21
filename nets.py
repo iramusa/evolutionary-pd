@@ -18,17 +18,23 @@ def perturb_parameters(m):
 class PDBrain(nn.Module):
     def __init__(self):
         super(PDBrain, self).__init__()
-        self.fc_seq = nn.Sequential(
+        self.fc_seq_1 = nn.Sequential(
             nn.Linear(1, FC_WIDTH),
             nn.Sigmoid(),
             nn.Linear(FC_WIDTH, FC_WIDTH),
             nn.Sigmoid(),
         )
-        self.recurrent = nn.GRU(FC_WIDTH, 1, num_layers=1)
+        self.recurrent = nn.GRU(FC_WIDTH, FC_WIDTH, num_layers=1)
+        self.fc_seq_2 = nn.Sequential(
+            nn.Linear(FC_WIDTH, 1),
+            nn.Sigmoid(),
+        )
 
     def forward(self, last_move, state):
-        h = self.fc_seq(last_move)
-        new_move, state = self.recurrent(h.view(1, 1, 10), state)
+        h = self.fc_seq_1(last_move)
+        h, state = self.recurrent(h.view(1, 1, 10), state)
+        new_move = self.fc_seq_2(h.view(1, 10))
+
         return new_move, state
 
     def perturb_weights(self):

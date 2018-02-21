@@ -36,7 +36,7 @@ class NeuralPlayer(Player):
     def play(self, last_move):
         new_move_p, self.state = self.net(last_move, self.state)
 
-        if np.random.rand() > new_move_p.data.cpu().numpy()[0, 0, 0]:
+        if np.random.rand() > new_move_p.data.cpu().numpy()[0, 0]:
             new_move = 1
         else:
             new_move = 0
