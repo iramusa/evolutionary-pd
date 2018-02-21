@@ -6,8 +6,8 @@ import torch
 from players import NeuralPlayer, TitTatPlayer
 from tourney import Tourney
 
-N_PLAYERS = 1000
-ROUNDS_BETWEEN_REPLICATIONS = 2
+N_PLAYERS = 200
+ROUNDS_BETWEEN_REPLICATIONS = 4
 N_TOURNEYS = 20
 
 
@@ -33,8 +33,9 @@ class Evolution(object):
 
     def replicate_players(self):
         # probability of picking a player is a function of fitness
-        fit = np.array(self.fitness)/ROUNDS_BETWEEN_REPLICATIONS
-        # fit = fit - np.min(fit)
+        fit = np.array(self.fitness)/(2 * ROUNDS_BETWEEN_REPLICATIONS)
+        fit = fit - np.min(fit) + 1
+        # fit = fit**2
         fit = fit / np.sum(fit)
 
         indices = np.random.choice(np.arange(len(self.population)), size=N_PLAYERS, replace=True, p=fit)
@@ -53,7 +54,7 @@ if __name__ == "__main__":
         evo.load_population()
     except Exception:
         print("population not loaded! Supplying a new one")
-        for i in range(80):
+        for i in range(N_PLAYERS):
             evo.population.append(NeuralPlayer())
 
         # for i in range(20):
